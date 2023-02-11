@@ -5,10 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.route.newsappc37.R
+import com.route.newsappc37.databinding.NewsItemBinding
 import com.route.newsappc37.model.ArticlesItem
 
 class NewsAdapter(var articles: List<ArticlesItem?>? = null) :
@@ -20,8 +22,15 @@ class NewsAdapter(var articles: List<ArticlesItem?>? = null) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
-        return NewsViewHolder(view)
+//        val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
+        val itemBinding: NewsItemBinding =
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.news_item,
+                parent,
+                false
+            )
+        return NewsViewHolder(itemBinding)
     }
 
     override fun getItemCount(): Int {
@@ -30,19 +39,15 @@ class NewsAdapter(var articles: List<ArticlesItem?>? = null) :
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val item = articles?.get(position)
-        holder.title.text = item?.title
-        holder.author.text = item?.author
-        holder.publishedAt.text = item?.publishedAt
-        Glide.with(holder.itemView).load(item?.urlToImage).into(holder.image)
+        holder.bind(item)
+
     }
 
-    class NewsViewHolder(val itemView: View) : ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.title)
-        val image: ImageView = itemView.findViewById(R.id.news_image)
-        val publishedAt: TextView = itemView.findViewById(R.id.published_at)
-        val author: TextView = itemView.findViewById(R.id.author)
+    class NewsViewHolder(val itemBinding: NewsItemBinding) : ViewHolder(itemBinding.root) {
+        fun bind(articlesItem: ArticlesItem?) {
+            itemBinding.articleItem = articlesItem
 
-
+        }
     }
 
 }

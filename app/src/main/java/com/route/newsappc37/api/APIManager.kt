@@ -16,6 +16,7 @@ class APIManager {
                 Log.e("TAG", "Retrofit == null")
                 val logging = HttpLoggingInterceptor()
                 logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+
                 val client: OkHttpClient = OkHttpClient.Builder()
                     .addInterceptor(logging)
                     .build()
