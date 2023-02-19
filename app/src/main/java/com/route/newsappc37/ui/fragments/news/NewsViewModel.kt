@@ -30,7 +30,6 @@ class NewsViewModel : ViewModel() {
                     loadingLiveData.value = false
                     articlesLiveData.value = response.body()?.articles
                 }
-
                 override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
                     loadingLiveData.value = false
                     messageLiveData.value = t.message

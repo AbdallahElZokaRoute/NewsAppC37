@@ -5,33 +5,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.route.newsappc37.Constants
 import com.route.newsappc37.R
-import com.route.newsappc37.api.APIManager
 import com.route.newsappc37.databinding.FragmentNewsBinding
-import com.route.newsappc37.databinding.NewsItemBinding
+import com.route.newsappc37.model.ArticlesItem
 import com.route.newsappc37.model.Category
-import com.route.newsappc37.model.NewsResponse
 import com.route.newsappc37.model.SourcesItem
-import com.route.newsappc37.model.SourcesResponse
 import com.route.newsappc37.ui.adapter.NewsAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.route.newsappc37.ui.adapter.OnArticleClickListener
 
 class NewsFragment private constructor() : Fragment() {
     companion object {
-        lateinit var selectedCategory: Category
+        var selectedCategory: Category = Category(
+            "sports", R.drawable.ball,
+            R.string.sports, R.color.red
+        )
+
         fun newInstance(category: Category): NewsFragment {
             selectedCategory = category
             return NewsFragment()
@@ -43,6 +38,8 @@ class NewsFragment private constructor() : Fragment() {
     lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
     lateinit var binding: FragmentNewsBinding
+    var onArticleClickListener: OnArticleClickListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        viewModel = NewsViewModel()
@@ -52,7 +49,7 @@ class NewsFragment private constructor() : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_news, container, false)
@@ -71,6 +68,15 @@ class NewsFragment private constructor() : Fragment() {
         subscribeToLiveData()
         // Execute  -> Runs on Main Thread
         // Enqueue  -> Enqueues Calls to background Thread
+        newsAdapter.OnArticleClickListener2 = object : OnArticleClickListener {
+            override fun onArticleClick(articleItem: ArticlesItem?) {
+                Log.e("jayz2", "onArticleClick: ")
+
+                onArticleClickListener?.onArticleClick(articleItem)
+            }
+
+        }
+
     }
 
     fun subscribeToLiveData() {
