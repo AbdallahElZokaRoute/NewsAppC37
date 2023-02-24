@@ -7,15 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import com.route.newsappc37.R
 import com.route.newsappc37.databinding.FragmentArticleDetailsBinding
-import com.route.newsappc37.databinding.FragmentNewsBinding
 import com.route.newsappc37.model.ArticlesItem
 
 
@@ -31,12 +27,12 @@ class ArticleDetailsFragment private constructor(): Fragment() {
             return ArticleDetailsFragment()
         }
     }
-lateinit var binding: FragmentArticleDetailsBinding
+private lateinit var binding: FragmentArticleDetailsBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
          binding = DataBindingUtil.inflate(inflater,R.layout.fragment_article_details, container,false)
         return binding.root
     }
@@ -45,7 +41,6 @@ lateinit var binding: FragmentArticleDetailsBinding
         super.onViewCreated(view, savedInstanceState)
 
         binding.articleDetails = articleItemSelected
-        Glide.with(binding.detailsImage).load(articleItemSelected.urlToImage).into(binding.detailsImage)
 
 
         // fullArticle.text = articleItemSelected.url

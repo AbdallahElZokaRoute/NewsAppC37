@@ -70,7 +70,6 @@ class NewsFragment private constructor() : Fragment() {
         // Enqueue  -> Enqueues Calls to background Thread
         newsAdapter.OnArticleClickListener2 = object : OnArticleClickListener {
             override fun onArticleClick(articleItem: ArticlesItem?) {
-                Log.e("jayz2", "onArticleClick: ")
 
                 onArticleClickListener?.onArticleClick(articleItem)
             }

@@ -83,7 +83,7 @@ class HomeActivity : AppCompatActivity(), OnArticleClickListener, OnCategorySele
 
     override fun onCategorySelected(category: Category) {
         newsFragment = NewsFragment.newInstance(category)
-        Log.e("Cat", "${newsFragment}")
+
 
         newsFragment.onArticleClickListener = this@HomeActivity
         pushFragment(newsFragment, true)
