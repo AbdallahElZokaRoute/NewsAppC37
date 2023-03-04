@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.route.newsappc37.Constants
 import com.route.newsappc37.R
 import com.route.newsappc37.api.APIManager
+import com.route.newsappc37.api.coroutines.MyThreadWorker
 import com.route.newsappc37.databinding.FragmentNewsBinding
 import com.route.newsappc37.databinding.NewsItemBinding
 import com.route.newsappc37.model.Category
@@ -71,6 +72,12 @@ class NewsFragment private constructor() : Fragment() {
         subscribeToLiveData()
         // Execute  -> Runs on Main Thread
         // Enqueue  -> Enqueues Calls to background Thread
+        Log.e("TAG", "onViewCreated:${Thread.currentThread().name} ")
+        val thread = MyThreadWorker()
+
+        Log.e("Tag", "${thread.name}")
+
+        thread.start()
     }
 
     fun subscribeToLiveData() {
