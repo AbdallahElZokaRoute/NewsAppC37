@@ -3,8 +3,11 @@ package com.route.newsappc37.repos.news
 import com.route.newsappc37.Constants
 import com.route.newsappc37.api.WebServices
 import com.route.newsappc37.model.ArticlesItem
+import javax.inject.Inject
 
-class NewsOnlineDataSourceImpl(val webServices: WebServices) : NewsOnlineDataSource {
+class NewsOnlineDataSourceImpl @Inject constructor(
+    val webServices: WebServices
+) : NewsOnlineDataSource {
 
     override suspend fun getNews(source: String): List<ArticlesItem> {
         try {

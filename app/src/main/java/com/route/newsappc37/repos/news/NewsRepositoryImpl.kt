@@ -1,15 +1,15 @@
 package com.route.newsappc37.repos.news
 
 import com.route.newsappc37.model.ArticlesItem
+import javax.inject.Inject
 
 /**
  * News Repository -> DataSources -> Online Or Offline
  *
  */
-class NewsRepositoryImpl(
+class NewsRepositoryImpl @Inject constructor(
     val newsOnlineDataSource: NewsOnlineDataSource,
-
-    ) : NewsRepository {
+) : NewsRepository {
     override suspend fun getNews(source: String): List<ArticlesItem> {
         try {
             val response = newsOnlineDataSource.getNews(source)

@@ -4,8 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.route.newsappc37.Constants
-import com.route.newsappc37.api.APIManager
-import com.route.newsappc37.database.NewsDatabase
 import com.route.newsappc37.model.ArticlesItem
 import com.route.newsappc37.model.NewsResponse
 import com.route.newsappc37.model.SourcesItem
@@ -15,37 +13,27 @@ import com.route.newsappc37.repos.news.NewsOnlineDataSourceImpl
 import com.route.newsappc37.repos.news.NewsRepository
 import com.route.newsappc37.repos.news.NewsRepositoryImpl
 import com.route.newsappc37.repos.sources.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NewsViewModel : ViewModel() {
-    var newsRepository: NewsRepository
-    var newsOnlineDataSource: NewsOnlineDataSource
-    var sourcesOfflineDataSource: SourcesOfflineDataSource
-    var sourcesRepository: SourcesRepository
-    var sourcesOnlineDataSource: SourcesOnlineDataSource
-    var networkHandler: NetworkHandler
+@HiltViewModel
+class NewsViewModel @Inject constructor(
+    private val newsRepository: NewsRepository,
+    private val sourcesRepository: SourcesRepository
+) : ViewModel() {
 
-    init {
-        networkHandler = object : NetworkHandler {
-            override fun isOnline(): Boolean {
-                //Will be implemented in the next session
-                return true
-            }
-        }
-        sourcesOnlineDataSource = SourcesOnlineDataSourceImpl(APIManager.getWebServices())
-        sourcesOfflineDataSource = SourcesOfflineDataSourceImpl(NewsDatabase.database!!)
+    //Directed ACyclic Graph
+    //DAGGER
+    /**
+     * Two Steps ->
+     *      1- Provide or Binds Dependency -> Create Dependencies
+     *      2- Inject Dependencies -> Use Dependencies(Already created in previous step)
+     *
+     */
 
-        sourcesRepository = SourcesRepositoryImpl(
-            sourcesOnlineDataSource = sourcesOnlineDataSource,
-            sourcesOfflineDataSource = sourcesOfflineDataSource,
-            networkHandler = networkHandler
-        )
-        newsOnlineDataSource = NewsOnlineDataSourceImpl(APIManager.getWebServices())
-        newsRepository = NewsRepositoryImpl(newsOnlineDataSource)
-
-    }
 
     val articlesLiveData = MutableLiveData<List<ArticlesItem?>?>()
     val loadingLiveData = MutableLiveData<Boolean>(true)
@@ -57,10 +45,10 @@ class NewsViewModel : ViewModel() {
         viewModelScope.launch {
             parentJob?.join()
             try {
-                val response: NewsResponse =
-                    APIManager.getWebServices().getNewsBySource(Constants.API_KEY, item?.id!!, "en")
+                val response =
+                    newsRepository.getNews(item?.id!!)
                 loadingLiveData.value = false
-                articlesLiveData.value = response.articles
+                articlesLiveData.value = response
             } catch (ex: Exception) {
                 messageLiveData.value = ex.localizedMessage
                 loadingLiveData.value = false
@@ -91,11 +79,11 @@ class NewsViewModel : ViewModel() {
         parentJob = viewModelScope.launch {
             launch(Dispatchers.IO) {
                 try {
-                    val response = APIManager
-                        .getWebServices()
-                        .getSources(Constants.API_KEY, NewsFragment.selectedCategory.apiID, "en")
-                    val sources = response.sources
-                    sourcesLiveData.postValue(sources)
+                    val response = sourcesRepository.getSources(
+                        NewsFragment.selectedCategory.apiID,
+                    )
+
+                    sourcesLiveData.postValue(response)
 
                 } catch (ex: Exception) {
                     loadingLiveData.postValue(false)

@@ -32,7 +32,7 @@ data class SourcesItem(
     val language: String? = null,
     @PrimaryKey
     @field:SerializedName("id")
-    val id: String? = null,
+    val id: String,
 
     @field:SerializedName("category")
     val category: String? = null,

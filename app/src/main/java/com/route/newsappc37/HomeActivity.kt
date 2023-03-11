@@ -11,7 +11,9 @@ import com.route.newsappc37.ui.adapter.OnCategorySelectedListener
 import com.route.newsappc37.ui.fragments.CategoriesFragment
 import com.route.newsappc37.ui.fragments.news.NewsFragment
 import com.route.newsappc37.ui.fragments.SettingsFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     lateinit var drawerLayout: DrawerLayout
     lateinit var drawerButton: ImageView

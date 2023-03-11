@@ -3,8 +3,9 @@ package com.route.newsappc37.repos.sources
 import com.route.newsappc37.model.Category
 import com.route.newsappc37.model.SourcesItem
 import com.route.newsappc37.repos.NetworkHandler
+import javax.inject.Inject
 
-class SourcesRepositoryImpl(
+class SourcesRepositoryImpl @Inject constructor(
     val sourcesOnlineDataSource: SourcesOnlineDataSource,
     val sourcesOfflineDataSource: SourcesOfflineDataSource,
     val networkHandler: NetworkHandler

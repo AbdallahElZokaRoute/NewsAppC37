@@ -4,8 +4,11 @@ import com.route.newsappc37.Constants
 import com.route.newsappc37.api.WebServices
 import com.route.newsappc37.model.Category
 import com.route.newsappc37.model.SourcesItem
+import javax.inject.Inject
 
-class SourcesOnlineDataSourceImpl(val webServices: WebServices) : SourcesOnlineDataSource {
+class SourcesOnlineDataSourceImpl @Inject constructor(
+    val webServices: WebServices
+) : SourcesOnlineDataSource {
     override suspend fun getSources(category: String): List<SourcesItem> {
         try {
             val response = webServices.getSources(Constants.API_KEY, category = category, "en")

@@ -10,19 +10,5 @@ import com.route.newsappc37.model.SourcesItem
 abstract class NewsDatabase : RoomDatabase() {
     abstract fun getNewsDao(): SourcesDao
 
-    companion object {
-        var database: NewsDatabase? = null
-        const val DATA_BASE_NAME = "NewsDataBase"
-        fun getInstance(context: Context): NewsDatabase {
-            if (database == null) {
-                database = Room.databaseBuilder(context, NewsDatabase::class.java, DATA_BASE_NAME)
-                    .fallbackToDestructiveMigration()
-                    .build()
-            }
-            return database!!
-
-
-        }
-    }
 
 }
