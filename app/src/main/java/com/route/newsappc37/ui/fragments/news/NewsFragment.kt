@@ -10,14 +10,13 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.route.domain.entity.SourcesItemDTO
 import com.route.newsappc37.R
 import com.route.newsappc37.api.coroutines.MyThreadWorker
 import com.route.newsappc37.databinding.FragmentNewsBinding
 import com.route.newsappc37.model.Category
-import com.route.newsappc37.model.SourcesItem
 import com.route.newsappc37.ui.adapter.NewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -85,7 +84,7 @@ class NewsFragment private constructor() : Fragment() {
     }
 
 
-    private fun addTabs(sources: List<SourcesItem?>?) {
+    private fun addTabs(sources: List<SourcesItemDTO?>?) {
         sources?.let { list ->
 //            for (item in list) {
 //                val tab = tabLayout.newTab()
@@ -103,7 +102,7 @@ class NewsFragment private constructor() : Fragment() {
         binding.newsSourcesTabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 //                val source = sources?.get(tab?.position!!)
-                val source = tab?.tag as SourcesItem
+                val source = tab?.tag as SourcesItemDTO
                 viewModel.getNewsBySource(source)
             }
 

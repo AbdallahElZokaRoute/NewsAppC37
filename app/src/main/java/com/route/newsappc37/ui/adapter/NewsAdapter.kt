@@ -9,14 +9,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import com.route.domain.entity.NewsItemDTO
 import com.route.newsappc37.R
 import com.route.newsappc37.databinding.NewsItemBinding
-import com.route.newsappc37.model.ArticlesItem
 
-class NewsAdapter(var articles: List<ArticlesItem?>? = null) :
+class NewsAdapter(var articles: List<NewsItemDTO?>? = null) :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
-    fun updateData(articles: List<ArticlesItem?>?) {
+    fun updateData(articles: List<NewsItemDTO?>?) {
         this.articles = articles
         notifyDataSetChanged()
     }
@@ -44,7 +44,7 @@ class NewsAdapter(var articles: List<ArticlesItem?>? = null) :
     }
 
     class NewsViewHolder(val itemBinding: NewsItemBinding) : ViewHolder(itemBinding.root) {
-        fun bind(articlesItem: ArticlesItem?) {
+        fun bind(articlesItem: NewsItemDTO?) {
             itemBinding.articleItem = articlesItem
 
         }

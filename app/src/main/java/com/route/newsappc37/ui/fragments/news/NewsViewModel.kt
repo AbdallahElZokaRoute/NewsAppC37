@@ -3,16 +3,10 @@ package com.route.newsappc37.ui.fragments.news
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.route.newsappc37.Constants
-import com.route.newsappc37.model.ArticlesItem
-import com.route.newsappc37.model.NewsResponse
-import com.route.newsappc37.model.SourcesItem
-import com.route.newsappc37.repos.NetworkHandler
-import com.route.newsappc37.repos.news.NewsOnlineDataSource
-import com.route.newsappc37.repos.news.NewsOnlineDataSourceImpl
-import com.route.newsappc37.repos.news.NewsRepository
-import com.route.newsappc37.repos.news.NewsRepositoryImpl
-import com.route.newsappc37.repos.sources.*
+import com.route.domain.entity.NewsItemDTO
+import com.route.domain.entity.SourcesItemDTO
+import com.route.domain.usecases.GetNewsUseCase
+import com.route.domain.usecases.GetSourcesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    private val newsRepository: NewsRepository,
-    private val sourcesRepository: SourcesRepository
+    private val getSourcesUseCase: GetSourcesUseCase,
+    private val getNewsUseCase: GetNewsUseCase
 ) : ViewModel() {
 
     //Directed ACyclic Graph
@@ -35,18 +29,18 @@ class NewsViewModel @Inject constructor(
      */
 
 
-    val articlesLiveData = MutableLiveData<List<ArticlesItem?>?>()
+    val articlesLiveData = MutableLiveData<List<NewsItemDTO?>?>()
     val loadingLiveData = MutableLiveData<Boolean>(true)
     val messageLiveData = MutableLiveData<String>()
-    val sourcesLiveData = MutableLiveData<List<SourcesItem?>?>()
+    val sourcesLiveData = MutableLiveData<List<SourcesItemDTO?>?>()
     var parentJob: Job? = null
-    fun getNewsBySource(item: SourcesItem?) {
+    fun getNewsBySource(item: SourcesItemDTO?) {
 
         viewModelScope.launch {
             parentJob?.join()
             try {
                 val response =
-                    newsRepository.getNews(item?.id!!)
+                    getNewsUseCase(item?.id!!)
                 loadingLiveData.value = false
                 articlesLiveData.value = response
             } catch (ex: Exception) {
@@ -79,7 +73,7 @@ class NewsViewModel @Inject constructor(
         parentJob = viewModelScope.launch {
             launch(Dispatchers.IO) {
                 try {
-                    val response = sourcesRepository.getSources(
+                    val response = getSourcesUseCase(
                         NewsFragment.selectedCategory.apiID,
                     )
 
