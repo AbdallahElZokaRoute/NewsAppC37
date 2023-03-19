@@ -15,8 +15,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var drawerButton: ImageView
+    val drawerLayout: DrawerLayout by lazy {
+        findViewById(R.id.drawer_layout)
+    }
+    val drawerButton: ImageView by lazy {
+        findViewById(R.id.drawer_button)
+    }
     lateinit var categoriesTextView: TextView
     lateinit var settingsTextView: TextView
     lateinit var categoriesFragment: CategoriesFragment
@@ -24,8 +28,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        drawerButton = findViewById(R.id.drawer_button)
-        drawerLayout = findViewById(R.id.drawer_layout)
         categoriesTextView = findViewById(R.id.categories_text_view)
         settingsTextView = findViewById(R.id.settings_text_view)
         categoriesFragment = CategoriesFragment()

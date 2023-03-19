@@ -33,7 +33,18 @@ class NewsFragment private constructor() : Fragment() {
 
 
     val viewModel: NewsViewModel by viewModels()
-    lateinit var newsAdapter: NewsAdapter
+
+    //Eager Initialization
+    var newsAdapter: NewsAdapter = NewsAdapter(null)
+
+    // Lazy Initialization
+    val newsAdapter2: NewsAdapter by lazy {
+        NewsAdapter(null)
+    }
+    // Lazy vs Eager Initialization
+    //
+
+
     lateinit var binding: FragmentNewsBinding
 
     override fun onCreateView(
@@ -75,6 +86,7 @@ class NewsFragment private constructor() : Fragment() {
         }
         viewModel.articlesLiveData.observe(viewLifecycleOwner) { articles ->
             newsAdapter.updateData(articles)
+            newsAdapter2.updateData(articles)
         }
         viewModel.messageLiveData.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
