@@ -7,5 +7,9 @@ import javax.inject.Inject
 class GetNewsUseCase @Inject constructor(
     private val newsRepository: NewsRepository
 ) {
-    suspend operator fun invoke(source: String): List<NewsItemDTO> = newsRepository.getNews(source)
+    suspend operator fun invoke(source: String): List<NewsItemDTO> {
+        if (source.isBlank())
+            return emptyList()
+        return newsRepository.getNews(source)
+    }
 }

@@ -3,6 +3,8 @@ package com.route.domain.usecases
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.route.domain.entity.NewsItemDTO
 import com.route.domain.reposImplForTesting.FakeNewsRepositoryImpl
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
@@ -19,6 +21,8 @@ class GetNewsUseCaseTest {
      *  if you called API or Database -> It will take time
      *  Fake Repository
      */
+//    @get:Rule
+//    val hiltAndroidRule = HiltAndroidRule(this)
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -60,9 +64,18 @@ class GetNewsUseCaseTest {
         // Act
         val result = getNewsUseCase(source)
 
-        //Assert
+        //Assert        []                  [ , , , , ]
         assertEquals(emptyList<NewsItemDTO>(), result)
-
+        // Clean Arch
+        /**
+         *  Activity - Fragments (UI-Espresso)
+         *  ViewModels
+         *  UseCases
+         *  Repositories
+         *  Database
+         *
+         *
+         */
     }
 
 }

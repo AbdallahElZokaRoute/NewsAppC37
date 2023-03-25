@@ -38,10 +38,10 @@ class RegisterationUtils {
         passwordConfimration: String?
     ): Boolean {
         if (userName == null) return false
-        if (userName?.isBlank() == true) return false
-        if (userName?.length!! < 5) return false
+        if (userName.isBlank()) return false
+        if (userName.length < 5) return false
         if (password == null) return false
-        if (password?.length!! < 6) return false
+        if (password.length < 6) return false
         if (passwordConfimration == null) return false
         if (password != passwordConfimration) return false
 

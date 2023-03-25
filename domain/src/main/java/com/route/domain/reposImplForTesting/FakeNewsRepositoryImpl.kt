@@ -6,6 +6,9 @@ import com.route.domain.repos.NewsRepository
 
 class FakeNewsRepositoryImpl : NewsRepository {
     override suspend fun getNews(source: String): List<NewsItemDTO> {
+        if (source.isBlank()) {
+            return emptyList()
+        }
         return listOf(
             NewsItemDTO(
                 "3/18/2023",
@@ -16,7 +19,8 @@ class FakeNewsRepositoryImpl : NewsRepository {
                 "Title",
                 "URL",
                 "Content"
-            ),NewsItemDTO(
+            ),
+            NewsItemDTO(
                 "3/18/2023",
                 "Hello",
                 "image",
@@ -25,7 +29,8 @@ class FakeNewsRepositoryImpl : NewsRepository {
                 "Title",
                 "URL",
                 "Content"
-            ),NewsItemDTO(
+            ),
+            NewsItemDTO(
                 "3/18/2023",
                 "Hello",
                 "image",
