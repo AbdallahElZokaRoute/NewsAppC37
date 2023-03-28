@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.domain.entities.NewsItemDTO
 import com.route.newsappc37.R
 import com.route.newsappc37.databinding.NewsItemBinding
-import com.route.newsappc37.model.ArticlesItem
-import com.route.newsappc37.model.Category
 
-class NewsAdapter(var articles: List<ArticlesItem?>? = null) :
+
+class NewsAdapter(var articles: List<NewsItemDTO ?>? = null) :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     var OnArticleClickListener2: OnArticleClickListener? = null
 
-    fun updateData(articles: List<ArticlesItem?>?) {
+    fun updateData(articles: List<NewsItemDTO?>?) {
         this.articles = articles
         notifyDataSetChanged()
     }
@@ -48,7 +48,7 @@ class NewsAdapter(var articles: List<ArticlesItem?>? = null) :
     }
 
     class NewsViewHolder(val itemBinding: NewsItemBinding) : ViewHolder(itemBinding.root) {
-        fun bind(articlesItem: ArticlesItem?) {
+        fun bind(articlesItem: NewsItemDTO?) {
             itemBinding.articleItem = articlesItem
 
         }
@@ -58,5 +58,5 @@ class NewsAdapter(var articles: List<ArticlesItem?>? = null) :
 
 interface OnArticleClickListener {
 
-    fun onArticleClick(articleItem: ArticlesItem?)
+    fun onArticleClick(articleItem: NewsItemDTO?)
 }

@@ -10,7 +10,9 @@ import com.route.newsappc37.R
 import com.route.newsappc37.model.Category
 import com.route.newsappc37.ui.adapter.CategoriesAdapter
 import com.route.newsappc37.ui.adapter.OnCategorySelectedListener
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoriesFragment : Fragment() {
     val categories = listOf(
         Category(

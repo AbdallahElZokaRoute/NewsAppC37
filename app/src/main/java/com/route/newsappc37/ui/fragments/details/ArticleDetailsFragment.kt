@@ -10,19 +10,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.domain.entities.NewsItemDTO
 import com.route.newsappc37.R
 import com.route.newsappc37.databinding.FragmentArticleDetailsBinding
-import com.route.newsappc37.model.ArticlesItem
+
 
 
 class ArticleDetailsFragment private constructor(): Fragment() {
 
     companion object {
-        lateinit var articleItemSelected: ArticlesItem
+        lateinit var articleItemSelected: NewsItemDTO
 
 
 
-        fun newInstance(articlesItem: ArticlesItem): ArticleDetailsFragment {
+        fun newInstance(articlesItem: NewsItemDTO): ArticleDetailsFragment {
             articleItemSelected = articlesItem
             return ArticleDetailsFragment()
         }

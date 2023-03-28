@@ -1,13 +1,12 @@
 package com.route.newsappc37
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.route.newsappc37.model.ArticlesItem
+import com.example.domain.entities.NewsItemDTO
 import com.route.newsappc37.model.Category
 import com.route.newsappc37.ui.adapter.OnArticleClickListener
 import com.route.newsappc37.ui.adapter.OnCategorySelectedListener
@@ -15,7 +14,9 @@ import com.route.newsappc37.ui.fragments.details.ArticleDetailsFragment
 import com.route.newsappc37.ui.fragments.CategoriesFragment
 import com.route.newsappc37.ui.fragments.news.NewsFragment
 import com.route.newsappc37.ui.fragments.SettingsFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), OnArticleClickListener, OnCategorySelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var drawerButton: ImageView
@@ -76,7 +77,7 @@ class HomeActivity : AppCompatActivity(), OnArticleClickListener, OnCategorySele
 
     }
 
-    override fun onArticleClick(articleItem: ArticlesItem?) {
+    override fun onArticleClick(articleItem: NewsItemDTO?) {
         pushFragment(ArticleDetailsFragment.newInstance(articleItem!!), true)
 
     }

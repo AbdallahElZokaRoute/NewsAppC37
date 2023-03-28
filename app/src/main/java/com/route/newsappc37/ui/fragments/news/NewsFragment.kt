@@ -9,17 +9,20 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.example.domain.entities.NewsItemDTO
+import com.example.domain.entities.SourcesItemDTO
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.route.newsappc37.R
 import com.route.newsappc37.databinding.FragmentNewsBinding
-import com.route.newsappc37.model.ArticlesItem
 import com.route.newsappc37.model.Category
-import com.route.newsappc37.model.SourcesItem
 import com.route.newsappc37.ui.adapter.NewsAdapter
 import com.route.newsappc37.ui.adapter.OnArticleClickListener
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NewsFragment private constructor() : Fragment() {
     companion object {
         var selectedCategory: Category = Category(
@@ -35,16 +38,12 @@ class NewsFragment private constructor() : Fragment() {
     }
 
 
-    lateinit var viewModel: NewsViewModel
+     val viewModel: NewsViewModel by viewModels()
     lateinit var newsAdapter: NewsAdapter
     lateinit var binding: FragmentNewsBinding
     var onArticleClickListener: OnArticleClickListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        viewModel = NewsViewModel()
-        viewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +68,7 @@ class NewsFragment private constructor() : Fragment() {
         // Execute  -> Runs on Main Thread
         // Enqueue  -> Enqueues Calls to background Thread
         newsAdapter.OnArticleClickListener2 = object : OnArticleClickListener {
-            override fun onArticleClick(articleItem: ArticlesItem?) {
+            override fun onArticleClick(articleItem: NewsItemDTO?) {
 
                 onArticleClickListener?.onArticleClick(articleItem)
             }
@@ -96,7 +95,7 @@ class NewsFragment private constructor() : Fragment() {
     }
 
 
-    private fun addTabs(sources: List<SourcesItem?>?) {
+    private fun addTabs(sources: List<SourcesItemDTO?>?) {
         sources?.let { list ->
 //            for (item in list) {
 //                val tab = tabLayout.newTab()
@@ -114,7 +113,7 @@ class NewsFragment private constructor() : Fragment() {
         binding.newsSourcesTabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 //                val source = sources?.get(tab?.position!!)
-                val source = tab?.tag as SourcesItem
+                val source = tab?.tag as SourcesItemDTO
                 viewModel.getNewsBySource(source)
             }
 

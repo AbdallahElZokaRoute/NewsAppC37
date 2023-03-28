@@ -1,11 +1,15 @@
-package com.route.newsappc37.model
+package com.example.data.model
 
+import androidx.annotation.NonNull
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.data.IResponse
 import com.google.gson.annotations.SerializedName
 
-data class SourcesResponse(
+data class  SourcesResponse(
 
     @field:SerializedName("sources")
-    val sources: List<SourcesItem?>? = null,
+    val sources: List<SourcesItem>? = null,
     @field:SerializedName("message")
     val message: String? = null,
     @field:SerializedName("code")
@@ -13,7 +17,7 @@ data class SourcesResponse(
     @field:SerializedName("status")
     val status: String? = null
 )
-
+@Entity
 data class SourcesItem(
 
     @field:SerializedName("country")
@@ -28,12 +32,13 @@ data class SourcesItem(
     @field:SerializedName("language")
     val language: String? = null,
 
+@PrimaryKey
     @field:SerializedName("id")
-    val id: String? = null,
+    val id: String,
 
     @field:SerializedName("category")
     val category: String? = null,
 
     @field:SerializedName("url")
     val url: String? = null
-)
+) : IResponse
