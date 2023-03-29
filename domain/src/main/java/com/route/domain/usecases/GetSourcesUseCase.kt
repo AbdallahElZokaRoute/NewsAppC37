@@ -7,6 +7,7 @@ import javax.inject.Inject
 class GetSourcesUseCase @Inject constructor(
     private val sourcesRepository: SourcesRepository
 ) {
+    // Domain Layer -> Abstraction - >
     suspend operator fun invoke(category: String): List<SourcesItemDTO> =
         sourcesRepository.getSources(category)
 

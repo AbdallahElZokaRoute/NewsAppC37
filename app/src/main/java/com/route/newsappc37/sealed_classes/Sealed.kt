@@ -20,9 +20,13 @@ enum class UserTypes(val authorization: String) {
     ADMIN("admin"),
 }
 
+// Flow <NetworkResponse>
+//emit (Loading())
+//emit (Error())
+//emit (Success())
 
 sealed interface NetworkResponse {
-    object Loading : NetworkResponse
+    object Loading : NetworkResponse // 2 seconds
     class Error(val message: String) : NetworkResponse
     class Success<DATA>(val data: DATA) : NetworkResponse
 }
