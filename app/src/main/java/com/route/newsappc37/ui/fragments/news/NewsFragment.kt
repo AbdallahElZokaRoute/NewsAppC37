@@ -10,7 +10,8 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.domain.entities.NetworkResponse
 import com.example.domain.entities.NewsItemDTO
 import com.example.domain.entities.SourcesItemDTO
 import com.google.android.material.tabs.TabLayout
@@ -18,9 +19,12 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.route.newsappc37.R
 import com.route.newsappc37.databinding.FragmentNewsBinding
 import com.route.newsappc37.model.Category
+import com.route.newsappc37.model.NewsIntents
+import com.route.newsappc37.model.NewsViewStates
 import com.route.newsappc37.ui.adapter.NewsAdapter
 import com.route.newsappc37.ui.adapter.OnArticleClickListener
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class NewsFragment private constructor() : Fragment() {
@@ -65,6 +69,41 @@ class NewsFragment private constructor() : Fragment() {
         initViews()
         viewModel.getSourcesFromAPI()
         subscribeToLiveData()
+        viewModel.reduceNewsViewStates()
+        lifecycleScope.launchWhenStarted {
+            viewModel.newsViewStates.collect{
+                when (it){
+
+                    is NewsViewStates.LoadingState -> {
+                        viewModel.loadingLiveData.value = true
+
+
+
+                    }
+                    is NewsViewStates.EmptyState -> {
+                        viewModel.loadingLiveData.value = false
+                        Toast.makeText(requireContext(), "Empty List", Toast.LENGTH_SHORT).show()
+
+
+
+                    }
+                    is NewsViewStates.Error -> {
+                        viewModel.loadingLiveData.value = false
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+
+                    }
+                    is NewsViewStates.LoadedState -> {
+                        viewModel.loadingLiveData.value = false
+                        newsAdapter.updateData(it.newsList)
+
+
+                    }
+                }
+
+            }
+
+
+        }
         // Execute  -> Runs on Main Thread
         // Enqueue  -> Enqueues Calls to background Thread
         newsAdapter.OnArticleClickListener2 = object : OnArticleClickListener {
@@ -75,6 +114,7 @@ class NewsFragment private constructor() : Fragment() {
 
         }
 
+
     }
 
     fun subscribeToLiveData() {
@@ -84,9 +124,7 @@ class NewsFragment private constructor() : Fragment() {
         viewModel.loadingLiveData.observe(viewLifecycleOwner) { isLoadingVisible ->
             binding.loadingProgressBar.isVisible = isLoadingVisible
         }
-        viewModel.articlesLiveData.observe(viewLifecycleOwner) { articles ->
-            newsAdapter.updateData(articles)
-        }
+
         viewModel.messageLiveData.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
 
@@ -114,7 +152,9 @@ class NewsFragment private constructor() : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 //                val source = sources?.get(tab?.position!!)
                 val source = tab?.tag as SourcesItemDTO
-                viewModel.getNewsBySource(source)
+                lifecycleScope.launchWhenStarted {
+                    viewModel.newsIntents.send(NewsIntents.SelectedTab(source.id!!))
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {

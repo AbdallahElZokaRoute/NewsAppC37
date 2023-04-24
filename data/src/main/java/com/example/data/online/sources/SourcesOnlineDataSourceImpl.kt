@@ -14,10 +14,7 @@ class SourcesOnlineDataSourceImpl @Inject constructor(val webServices: WebServic
     override suspend fun getSources(category: String): List<SourcesItemDTO> {
 
         try {
-
-
-
-       val response = webServices.getSources(Constants.API_KEY,category)
+            val response = webServices.getSources(Constants.API_KEY,category)
             return response.sources?.map {
                 it.toDomainobject(SourcesItemDTO::class.java)
             } ?: emptyList()
